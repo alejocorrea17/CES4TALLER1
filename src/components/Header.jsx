@@ -38,9 +38,10 @@ const Header = ({ values, onChange }) => {
                                 values.saldoInicialTotal <= 0 ? "red" : "green",
                             maxWidth: "100px",
                         }}
+                        type="number"
                         onChange={(e) => onChange(e.target.value)}
                         startAdornment="$"
-                        value={values.saldoInicialTotal}
+                        value={values.saldoInicialTotal || ""}
                     />
                 </Box>
 

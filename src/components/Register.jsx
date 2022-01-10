@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useContext } from "react";
 
 import { useForm, Controller } from "react-hook-form";
+import { v4 as uuidv4 } from "uuid";
 
 import {
     Paper,
@@ -12,6 +13,9 @@ import {
     Button,
 } from "@mui/material";
 
+import { Context } from "../app";
+import toast from "react-hot-toast";
+
 const Register = () => {
     const {
         control,
@@ -19,8 +23,37 @@ const Register = () => {
         formState: { errors },
     } = useForm({ mode: "onChange" });
 
+    const { objSaldo, handlerChangeMovimiento } = useContext(Context);
+
     const onSubmit = (data) => {
-        console.log(data);
+        const { strMovimiento, strCantidad } = data;
+
+        if (strMovimiento === "gasto") {
+            const cantidad = Number(strCantidad);
+            const saldoFinalTotal = Number(objSaldo.saldoFinalTotal);
+
+            if (saldoFinalTotal - cantidad < 0) {
+                toast.error(
+                    "No tienes suficiente saldo para generar este movimiento"
+                );
+            } else {
+                handlerChangeMovimiento({
+                    ...data,
+                    id: uuidv4(),
+                });
+
+                toast.success("El gasto fue registrado con éxito");
+            }
+        }
+
+        if (strMovimiento === "ingreso") {
+            handlerChangeMovimiento({
+                ...data,
+                id: uuidv4(),
+            });
+
+            toast.success("El ingreso fue registrado con éxito");
+        }
     };
 
     return (
@@ -40,6 +73,7 @@ const Register = () => {
                 <Grid item xs={12}>
                     <Controller
                         name="strMovimiento"
+                        defaultValue=""
                         render={({ field: { name, onChange, value } }) => (
                             <TextField
                                 label="Tipo de movimiento"
@@ -70,6 +104,7 @@ const Register = () => {
                 <Grid item xs={12}>
                     <Controller
                         name="strNombre"
+                        defaultValue=""
                         render={({ field: { name, onChange, value } }) => (
                             <TextField
                                 label="Nombre"
@@ -96,6 +131,7 @@ const Register = () => {
                 <Grid item xs={12}>
                     <Controller
                         name="strCantidad"
+                        defaultValue=""
                         render={({ field: { name, onChange, value } }) => (
                             <TextField
                                 label="Cantidad"

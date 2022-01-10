@@ -6,7 +6,7 @@ import { Container } from "@mui/material";
 
 import Header from "./components/Header";
 
-const Context = createContext();
+export const Context = createContext();
 
 export const App = ({ children }) => {
     const [objSaldo, setObjSaldo] = useState({
@@ -14,22 +14,58 @@ export const App = ({ children }) => {
         saldoFinalTotal: null,
     });
 
+    const [objMovimientos, setObjMovimientos] = useState([]);
+
+    const handlerChangeMovimiento = (value) => {
+        const arrAux = objMovimientos;
+
+        arrAux.push(value);
+
+        setObjMovimientos(arrAux);
+
+        const { strMovimiento, strCantidad } = value;
+
+        let saldoFinalTotal = objSaldo.saldoFinalTotal;
+
+        if (strMovimiento === "gasto") {
+            saldoFinalTotal = (
+                Number(saldoFinalTotal) - Number(strCantidad)
+            ).toString();
+        }
+
+        if (strMovimiento === "ingreso") {
+            saldoFinalTotal = (
+                Number(saldoFinalTotal) + Number(strCantidad)
+            ).toString();
+        }
+
+        setObjSaldo((prevState) => ({
+            ...prevState,
+            saldoFinalTotal,
+        }));
+    };
+
     const handlerChangeSaldoInicial = (value) => {
         if (value < 1) {
             toast.error("El valor minimo debe ser $ 1");
-        } else {
-            setObjSaldo((prevState) => ({
-                saldoInicialTotal: value,
-                saldoFinalTotal:
-                    prevState.saldoFinalTotal === null
-                        ? value
-                        : prevState.saldoFinalTotal,
-            }));
         }
+
+        setObjSaldo((prevState) => ({
+            saldoFinalTotal:
+                objMovimientos.length === 0 ? value : prevState.saldoFinalTotal,
+            saldoInicialTotal: value,
+        }));
     };
 
     return (
-        <Context.Provider value={(objSaldo, handlerChangeSaldoInicial)}>
+        <Context.Provider
+            value={{
+                objSaldo,
+                handlerChangeSaldoInicial,
+                objMovimientos,
+                handlerChangeMovimiento,
+            }}
+        >
             <Container>
                 <Header
                     values={objSaldo}
