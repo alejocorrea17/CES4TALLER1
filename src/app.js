@@ -16,28 +16,81 @@ export const App = ({ children }) => {
 
     const [objMovimientos, setObjMovimientos] = useState([]);
 
-    const handlerChangeMovimiento = (value) => {
+    const handlerChangeMovimiento = ({ value, id }) => {
         const arrAux = objMovimientos;
+        const { strMovimiento, strCantidad } = value;
+        let saldoFinalTotal = objSaldo.saldoFinalTotal;
 
-        arrAux.push(value);
+        if (id) {
+            const prevState = arrAux.filter((e) => e.id === id);
+
+            let difCantidad =
+                Number(prevState[0].strCantidad) - Number(strCantidad);
+
+            if (difCantidad < Number(prevState[0].strCantidad)) {
+                saldoFinalTotal = (
+                    Number(saldoFinalTotal) - difCantidad
+                ).toString();
+            }
+
+            if (difCantidad > Number(prevState[0].strCantidad)) {
+                saldoFinalTotal = (
+                    Number(saldoFinalTotal) + difCantidad
+                ).toString();
+            }
+
+            arrAux[prevState.findIndex((e) => e.id === id)] = value;
+        } else {
+            arrAux.push(value);
+
+            if (strMovimiento === "gasto") {
+                saldoFinalTotal = (
+                    Number(saldoFinalTotal) - Number(strCantidad)
+                ).toString();
+            }
+
+            if (strMovimiento === "ingreso") {
+                saldoFinalTotal = (
+                    Number(saldoFinalTotal) + Number(strCantidad)
+                ).toString();
+            }
+        }
 
         setObjMovimientos(arrAux);
 
-        const { strMovimiento, strCantidad } = value;
+        setObjSaldo((prevState) => ({
+            ...prevState,
+            saldoFinalTotal,
+        }));
+    };
+
+    const deleteMovimiento = (id) => {
+        const arrAux = objMovimientos;
+
+        const prevState = arrAux.filter((e) => e.id === id);
+
+        const { strMovimiento, strCantidad } = prevState[0];
 
         let saldoFinalTotal = objSaldo.saldoFinalTotal;
 
+        arrAux.splice(
+            prevState.findIndex((e) => e.id === id),
+            1
+        );
+
         if (strMovimiento === "gasto") {
             saldoFinalTotal = (
-                Number(saldoFinalTotal) - Number(strCantidad)
+                Number(saldoFinalTotal) + Number(strCantidad)
             ).toString();
         }
 
         if (strMovimiento === "ingreso") {
             saldoFinalTotal = (
-                Number(saldoFinalTotal) + Number(strCantidad)
+                Number(saldoFinalTotal) - Number(strCantidad)
             ).toString();
         }
+
+        setObjMovimientos(arrAux);
 
         setObjSaldo((prevState) => ({
             ...prevState,
@@ -64,6 +117,7 @@ export const App = ({ children }) => {
                 handlerChangeSaldoInicial,
                 objMovimientos,
                 handlerChangeMovimiento,
+                deleteMovimiento,
             }}
         >
             <Container>

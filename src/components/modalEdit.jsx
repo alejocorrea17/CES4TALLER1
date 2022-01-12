@@ -1,0 +1,192 @@
+import React, { useContext, useEffect } from "react";
+
+import { useForm, Controller } from "react-hook-form";
+
+import { Context } from "../app";
+
+import toast from "react-hot-toast";
+
+import {
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogTitle,
+    Button,
+    Grid,
+    TextField,
+    MenuItem,
+} from "@mui/material";
+
+export const ModalEdit = ({ open, onClose, values }) => {
+    const {
+        control,
+        reset,
+        handleSubmit,
+        formState: { errors },
+    } = useForm({ mode: "onChange" });
+
+    const { objSaldo, handlerChangeMovimiento } = useContext(Context);
+
+    const onSubmit = (data) => {
+        const { strMovimiento, strCantidad } = data;
+
+        if (strMovimiento === "gasto") {
+            const cantidad = Number(strCantidad);
+            const saldoFinalTotal = Number(objSaldo.saldoFinalTotal);
+
+            if (saldoFinalTotal - cantidad < 0) {
+                toast.error(
+                    "No tienes suficiente saldo para generar este movimiento"
+                );
+            } else {
+                handlerChangeMovimiento({
+                    value: { ...data },
+                    id: values.id,
+                });
+
+                toast.success("El gasto fue actualizado con éxito");
+            }
+        }
+
+        if (strMovimiento === "ingreso") {
+            handlerChangeMovimiento({
+                value: { ...data },
+                id: values.id,
+            });
+
+            toast.success("El ingreso fue actualizado con éxito");
+        }
+
+        onClose();
+    };
+
+    useEffect(() => {
+        if (values) {
+            reset(values);
+        }
+    }, [values, reset]);
+
+    return (
+        <Dialog
+            open={open}
+            onClose={onClose}
+            PaperProps={{
+                component: "form",
+                noValidate: "noValidate",
+                onSubmit: handleSubmit(onSubmit),
+            }}
+        >
+            <DialogTitle>Editar movimiento</DialogTitle>
+
+            <DialogContent>
+                <Grid container direction="row" spacing={3}>
+                    <Grid item xs={12}>
+                        <Controller
+                            name="strMovimiento"
+                            defaultValue=""
+                            render={({ field: { name, onChange, value } }) => (
+                                <TextField
+                                    label="Tipo de movimiento"
+                                    name={name}
+                                    onChange={(e) => onChange(e)}
+                                    value={value}
+                                    helperText={
+                                        errors?.strMovimiento?.message ||
+                                        "Selecciona el tipo de movimiento"
+                                    }
+                                    error={errors?.strMovimiento ? true : false}
+                                    select
+                                    variant="standard"
+                                    fullWidth
+                                >
+                                    <MenuItem value="ingreso">Ingreso</MenuItem>
+                                    <MenuItem value="gasto">Gasto</MenuItem>
+                                </TextField>
+                            )}
+                            control={control}
+                            rules={{
+                                required:
+                                    "Por favor, selecciona el tipo de movimiento",
+                            }}
+                        />
+                    </Grid>
+
+                    <Grid item xs={12}>
+                        <Controller
+                            name="strNombre"
+                            defaultValue=""
+                            render={({ field: { name, onChange, value } }) => (
+                                <TextField
+                                    label="Nombre"
+                                    name={name}
+                                    onChange={(e) => onChange(e)}
+                                    value={value}
+                                    helperText={
+                                        errors?.strNombre?.message ||
+                                        "Digita el nombre del movimiento"
+                                    }
+                                    error={errors?.strNombre ? true : false}
+                                    variant="standard"
+                                    fullWidth
+                                />
+                            )}
+                            control={control}
+                            rules={{
+                                required:
+                                    "Por favor, digita el nombre del movimiento",
+                            }}
+                        />
+                    </Grid>
+
+                    <Grid item xs={12}>
+                        <Controller
+                            name="strCantidad"
+                            defaultValue=""
+                            render={({ field: { name, onChange, value } }) => (
+                                <TextField
+                                    label="Cantidad"
+                                    name={name}
+                                    onChange={(e) => onChange(e)}
+                                    value={value}
+                                    type="number"
+                                    helperText={
+                                        errors?.strCantidad?.message ||
+                                        "Digita el nombre del movimiento"
+                                    }
+                                    error={errors?.strCantidad ? true : false}
+                                    variant="standard"
+                                    InputProps={{
+                                        startAdornment: "$",
+                                    }}
+                                    fullWidth
+                                />
+                            )}
+                            control={control}
+                            rules={{
+                                required:
+                                    "Por favor, digita el nombre del movimiento",
+                                validate: (value) => {
+                                    const strCantidad = Number(value);
+
+                                    if (strCantidad < 1) {
+                                        return "La cantidad debe ser mayor a $0";
+                                    }
+                                },
+                            }}
+                        />
+                    </Grid>
+                </Grid>
+            </DialogContent>
+
+            <DialogActions>
+                <Button type="submit" color="success">
+                    actualizar
+                </Button>
+
+                <Button type="button" onClick={() => onClose()} color="inherit">
+                    cancelar
+                </Button>
+            </DialogActions>
+        </Dialog>
+    );
+};

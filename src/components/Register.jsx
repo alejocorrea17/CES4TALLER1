@@ -19,6 +19,7 @@ import toast from "react-hot-toast";
 const Register = () => {
     const {
         control,
+        reset,
         handleSubmit,
         formState: { errors },
     } = useForm({ mode: "onChange" });
@@ -27,6 +28,7 @@ const Register = () => {
 
     const onSubmit = (data) => {
         const { strMovimiento, strCantidad } = data;
+        let bitError = false;
 
         if (strMovimiento === "gasto") {
             const cantidad = Number(strCantidad);
@@ -36,10 +38,14 @@ const Register = () => {
                 toast.error(
                     "No tienes suficiente saldo para generar este movimiento"
                 );
+
+                bitError = true;
             } else {
                 handlerChangeMovimiento({
-                    ...data,
-                    id: uuidv4(),
+                    value: {
+                        ...data,
+                        id: uuidv4(),
+                    },
                 });
 
                 toast.success("El gasto fue registrado con éxito");
@@ -47,12 +53,28 @@ const Register = () => {
         }
 
         if (strMovimiento === "ingreso") {
+            const saldoInicialTotal = Number(objSaldo.saldoInicialTotal);
+
+            if (!saldoInicialTotal) {
+                toast.error("Por favor ingresa el saldo inicial");
+
+                bitError = true;
+
+                return;
+            }
+
             handlerChangeMovimiento({
-                ...data,
-                id: uuidv4(),
+                value: {
+                    ...data,
+                    id: uuidv4(),
+                },
             });
 
             toast.success("El ingreso fue registrado con éxito");
+        }
+
+        if (!bitError) {
+            reset();
         }
     };
 
@@ -154,7 +176,7 @@ const Register = () => {
                         control={control}
                         rules={{
                             required:
-                                "Por favor, digita el nombre del movimiento",
+                                "Por favor, digita la cantidad del movimiento",
                             validate: (value) => {
                                 const strCantidad = Number(value);
 

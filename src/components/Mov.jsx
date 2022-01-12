@@ -1,67 +1,101 @@
+import React, { Fragment, useState } from "react";
+
 import { Box, Paper, IconButton } from "@mui/material";
 
 import DeleteIcon from "@mui/icons-material/Delete";
 
 import EditIcon from "@mui/icons-material/Edit";
-
-import React from "react";
+import { ModalEdit } from "./modalEdit";
+import { ModalDelete } from "./modalDelete";
 
 const Mov = ({ values }) => {
+    const [openModalEdit, setOpenModalEdit] = useState(false);
+
+    const [openModalDelete, setOpenModalDelete] = useState(false);
+
+    const handlerChangeOpenModalEdit = () => {
+        setOpenModalEdit(!openModalEdit);
+    };
+
+    const handlerChangeOpenModalDelete = () => {
+        setOpenModalDelete(!openModalDelete);
+    };
+
     return (
-        <Paper sx={{ padding: "10px" }}>
-            <Box
-                sx={{
-                    display: "flex",
-                    flexDirection: "row",
-                    alignItems: "center",
-                }}
-            >
+        <Fragment>
+            <ModalEdit
+                open={openModalEdit}
+                onClose={handlerChangeOpenModalEdit}
+                values={values}
+            />
+
+            <ModalDelete
+                open={openModalDelete}
+                onClose={handlerChangeOpenModalDelete}
+                id={values.id}
+            />
+
+            <Paper sx={{ padding: "10px" }}>
                 <Box
                     sx={{
-                        flexGrow: 1,
                         display: "flex",
                         flexDirection: "row",
                         alignItems: "center",
                     }}
                 >
-                    <IconButton color="error">
-                        <DeleteIcon />
-                    </IconButton>
-
-                    <IconButton color="success">
-                        <EditIcon />
-                    </IconButton>
-
-                    <p
-                        style={{
-                            fontSize: "18px",
+                    <Box
+                        sx={{
+                            flexGrow: 1,
+                            display: "flex",
+                            flexDirection: "row",
+                            alignItems: "center",
                         }}
                     >
-                        {values.strNombre}
-                    </p>
-                </Box>
+                        <IconButton
+                            color="error"
+                            onClick={() => handlerChangeOpenModalDelete()}
+                        >
+                            <DeleteIcon />
+                        </IconButton>
 
-                <Box>
-                    <p>
-                        <span
+                        <IconButton
+                            color="success"
+                            onClick={() => handlerChangeOpenModalEdit()}
+                        >
+                            <EditIcon />
+                        </IconButton>
+
+                        <p
                             style={{
-                                color: "white",
-                                fontWeight: "bold",
-                                backgroundColor:
-                                    values.strMovimiento === "gasto"
-                                        ? "red"
-                                        : "green",
-                                borderRadius: "22%",
-                                padding: "5px 15px 5px",
-                                fontSize: "16px",
+                                fontSize: "18px",
                             }}
                         >
-                            {`$ ${values.strCantidad}`}
-                        </span>
-                    </p>
+                            {values.strNombre}
+                        </p>
+                    </Box>
+
+                    <Box>
+                        <p>
+                            <span
+                                style={{
+                                    color: "white",
+                                    fontWeight: "bold",
+                                    backgroundColor:
+                                        values.strMovimiento === "gasto"
+                                            ? "red"
+                                            : "green",
+                                    borderRadius: "22%",
+                                    padding: "5px 15px 5px",
+                                    fontSize: "16px",
+                                }}
+                            >
+                                {`$ ${values.strCantidad}`}
+                            </span>
+                        </p>
+                    </Box>
                 </Box>
-            </Box>
-        </Paper>
+            </Paper>
+        </Fragment>
     );
 };
 
