@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 
 import {
     Grid,
@@ -21,6 +21,18 @@ import Mov from "./Mov";
 
 const ListMov = () => {
     const { objMovimientos } = useContext(Context);
+
+    
+    const [objFilterMovimientos, setObjMovimientosFilter] = useState(objMovimientos);
+
+
+    const filterTipoMovimientos = (value) => {
+        if(value === 'todos'){
+            setObjMovimientosFilter(objMovimientos);
+        }
+        const arrAux = objMovimientos.filter(data => data.strMovimiento === value);
+        setObjMovimientosFilter(arrAux);
+    };
 
     return (
         <Paper
@@ -53,7 +65,7 @@ const ListMov = () => {
                                         borderRadius: "5px",
                                     }}
                                 >
-                                    {objMovimientos.length}
+                                    {objFilterMovimientos.length}
                                 </span>
                             </p>
                         </Box>
@@ -78,16 +90,20 @@ const ListMov = () => {
                         <FormGroup row>
                             <FormControlLabel
                                 label="Todos"
+                                onClick={() => filterTipoMovimientos('todos')}
                                 control={<Checkbox />}
                                 labelPlacement="end"
+                                defaultChecked="true"
                             />
                             <FormControlLabel
                                 label="Ingreso"
+                                onClick={() => filterTipoMovimientos('ingreso')}
                                 control={<Checkbox />}
                                 labelPlacement="end"
                             />
                             <FormControlLabel
                                 label="Gasto"
+                                onClick={() => filterTipoMovimientos('gasto')}
                                 control={<Checkbox />}
                                 labelPlacement="end"
                             />
@@ -95,7 +111,7 @@ const ListMov = () => {
                     </FormControl>
                 </Grid>
 
-                {objMovimientos.map((e) => (
+                {objFilterMovimientos.map((e) => (
                     <Grid item xs={12} key={e.id}>
                         <Mov values={e} />
                     </Grid>
