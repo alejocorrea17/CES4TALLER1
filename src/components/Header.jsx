@@ -1,5 +1,7 @@
 import React from "react";
 
+import NumberFormat from "react-number-format";
+
 import { Typography, Box, Divider, Input } from "@mui/material";
 
 import { Calculate as CalculateIcon } from "@mui/icons-material";
@@ -31,28 +33,37 @@ const Header = ({ values, onChange }) => {
 
                 <Box sx={{ marginRight: "15px" }}>
                     Saldo inicial:{" "}
-                    <Input
+                    <NumberFormat
+                        prefix="$"
+                        thousandSeparator
+                        customInput={Input}
                         name="saldoInicialTotal"
                         style={{
                             color:
                                 values.saldoInicialTotal <= 0 ? "red" : "green",
                             maxWidth: "100px",
                         }}
-                        type="number"
-                        onChange={(e) => onChange(e.target.value)}
-                        startAdornment="$"
+                        onValueChange={({ value }) => onChange(value)}
                         value={values.saldoInicialTotal || ""}
                     />
                 </Box>
 
                 <Box>
                     Saldo final:{" "}
-                    <span
+                    <NumberFormat
+                        prefix="$"
+                        thousandSeparator
+                        customInput={Input}
+                        disabled
                         style={{
                             color:
-                                values.saldoFinalTotal <= 0 ? "red" : "green",
+                                values.saldoFinalTotal <= 0
+                                    ? "red !important"
+                                    : "green !important",
+                            maxWidth: "100px",
                         }}
-                    >{`$ ${values.saldoFinalTotal || ""}`}</span>
+                        value={values.saldoFinalTotal}
+                    />
                 </Box>
             </Box>
 

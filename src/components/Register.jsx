@@ -1,5 +1,6 @@
 import React, { useContext } from "react";
 
+import NumberFormat from "react-number-format";
 import { useForm, Controller } from "react-hook-form";
 import { v4 as uuidv4 } from "uuid";
 
@@ -155,21 +156,20 @@ const Register = () => {
                         name="strCantidad"
                         defaultValue=""
                         render={({ field: { name, onChange, value } }) => (
-                            <TextField
+                            <NumberFormat
+                                prefix="$"
+                                thousandSeparator
+                                customInput={TextField}
                                 label="Cantidad"
                                 name={name}
-                                onChange={(e) => onChange(e)}
+                                onValueChange={({ value }) => onChange(value)}
                                 value={value}
-                                type="number"
                                 helperText={
                                     errors?.strCantidad?.message ||
                                     "Digita el nombre del movimiento"
                                 }
                                 error={errors?.strCantidad ? true : false}
                                 variant="standard"
-                                InputProps={{
-                                    startAdornment: "$",
-                                }}
                                 fullWidth
                             />
                         )}

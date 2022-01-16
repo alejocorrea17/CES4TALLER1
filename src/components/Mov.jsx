@@ -1,6 +1,8 @@
 import React, { Fragment, useState } from "react";
 
-import { Box, Paper, IconButton } from "@mui/material";
+import { Box, Paper, IconButton, Input } from "@mui/material";
+
+import NumberFormat from "react-number-format";
 
 import DeleteIcon from "@mui/icons-material/Delete";
 
@@ -89,7 +91,21 @@ const Mov = ({ values }) => {
                                     fontSize: "16px",
                                 }}
                             >
-                                {`$ ${values.strCantidad}`}
+                                {
+                                    <NumberFormat
+                                        prefix="$"
+                                        value={values.strCantidad}
+                                        disabled
+                                        thousandSeparator
+                                        customInput={Input}
+                                        style={{
+                                            WebkitTextFillColor:
+                                                "white !important",
+                                            color: "white !important",
+                                            maxWidth: "100px",
+                                        }}
+                                    />
+                                }
                             </span>
                         </p>
                     </Box>

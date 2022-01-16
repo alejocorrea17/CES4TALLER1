@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 
 import {
     Grid,
@@ -7,8 +7,8 @@ import {
     Box,
     TextField,
     FormControl,
-    FormGroup,
-    Checkbox,
+    Radio,
+    RadioGroup,
     FormLabel,
     FormControlLabel,
 } from "@mui/material";
@@ -22,17 +22,33 @@ import Mov from "./Mov";
 const ListMov = () => {
     const { objMovimientos } = useContext(Context);
 
-    
-    const [objFilterMovimientos, setObjMovimientosFilter] = useState(objMovimientos);
+    const [search, setSearch] = useState("");
 
+    const [strTipo, setStrTipo] = useState("todos");
+
+    const [objFilterMovimientos, setObjMovimientosFilter] = useState([]);
+
+    const handlerChangeSearch = (value) => {
+        setSearch(value);
+    };
 
     const filterTipoMovimientos = (value) => {
-        if(value === 'todos'){
-            setObjMovimientosFilter(objMovimientos);
-        }
-        const arrAux = objMovimientos.filter(data => data.strMovimiento === value);
-        setObjMovimientosFilter(arrAux);
+        setStrTipo(value);
     };
+
+    useEffect(() => {
+        let arrAux = objMovimientos.filter((data) =>
+            data.strNombre.includes(search)
+        );
+
+        if (strTipo === "todos") {
+            setObjMovimientosFilter(arrAux);
+        } else {
+            arrAux = arrAux.filter((data) => data.strMovimiento === strTipo);
+
+            setObjMovimientosFilter(arrAux);
+        }
+    }, [objMovimientos, strTipo, search]);
 
     return (
         <Paper
@@ -79,7 +95,10 @@ const ListMov = () => {
                         InputProps={{
                             startAdornment: <SearchIcon />,
                         }}
+                        name="search"
+                        value={search}
                         fullWidth
+                        onChange={(e) => handlerChangeSearch(e.target.value)}
                     />
                 </Grid>
 
@@ -87,27 +106,34 @@ const ListMov = () => {
                     <FormControl>
                         <FormLabel>Tipo de movimiento</FormLabel>
 
-                        <FormGroup row>
+                        <RadioGroup
+                            row
+                            name="tipo"
+                            value={strTipo}
+                            onChange={(e) =>
+                                filterTipoMovimientos(e.target.value)
+                            }
+                        >
                             <FormControlLabel
                                 label="Todos"
-                                onClick={() => filterTipoMovimientos('todos')}
-                                control={<Checkbox />}
+                                value="todos"
                                 labelPlacement="end"
                                 defaultChecked="true"
+                                control={<Radio />}
                             />
                             <FormControlLabel
                                 label="Ingreso"
-                                onClick={() => filterTipoMovimientos('ingreso')}
-                                control={<Checkbox />}
+                                value="ingreso"
                                 labelPlacement="end"
+                                control={<Radio />}
                             />
                             <FormControlLabel
                                 label="Gasto"
-                                onClick={() => filterTipoMovimientos('gasto')}
-                                control={<Checkbox />}
+                                value="gasto"
                                 labelPlacement="end"
+                                control={<Radio />}
                             />
-                        </FormGroup>
+                        </RadioGroup>
                     </FormControl>
                 </Grid>
 
