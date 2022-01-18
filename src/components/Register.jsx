@@ -57,7 +57,7 @@ const Register = () => {
             const saldoInicialTotal = Number(objSaldo.saldoInicialTotal);
 
             if (!saldoInicialTotal) {
-                toast.error("Por favor ingresa el saldo inicial");
+                toast.error("Por favor ingresa el saldo inicial.");
 
                 bitError = true;
 
