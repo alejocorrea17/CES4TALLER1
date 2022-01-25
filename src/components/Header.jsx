@@ -31,7 +31,12 @@ const Header = ({ values, onChange }) => {
                     </Box>
                 </Box>
 
-                <Box sx={{ marginRight: "15px" }}>
+                <Box
+                    sx={{
+                        marginRight: "15px",
+                        fontFamily: '"Roboto","Helvetica","Arial",sans-serif',
+                    }}
+                >
                     Saldo inicial:{" "}
                     <NumberFormat
                         prefix="$"
@@ -48,7 +53,11 @@ const Header = ({ values, onChange }) => {
                     />
                 </Box>
 
-                <Box>
+                <Box
+                    sx={{
+                        fontFamily: '"Roboto","Helvetica","Arial",sans-serif',
+                    }}
+                >
                     Saldo final:{" "}
                     <NumberFormat
                         prefix="$"

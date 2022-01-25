@@ -23,7 +23,6 @@ const Register = () => {
         reset,
         handleSubmit,
         formState: { errors },
-        clearErrors,
     } = useForm({ mode: "onChange" });
 
     const { objSaldo, handlerChangeMovimiento } = useContext(Context);
@@ -77,7 +76,6 @@ const Register = () => {
 
         if (!bitError) {
             reset({ strMovimiento: "", strNombre: "", strCantidad: "" });
-            clearErrors("strCantidad");
         }
     };
 

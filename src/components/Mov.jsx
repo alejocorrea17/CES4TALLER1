@@ -37,7 +37,7 @@ const Mov = ({ values }) => {
                 id={values.id}
             />
 
-            <Paper sx={{ padding: "10px" }}>
+            <Paper>
                 <Box
                     sx={{
                         display: "flex",
@@ -51,6 +51,7 @@ const Mov = ({ values }) => {
                             display: "flex",
                             flexDirection: "row",
                             alignItems: "center",
+                            padding: "15px",
                         }}
                     >
                         <IconButton
@@ -69,46 +70,41 @@ const Mov = ({ values }) => {
 
                         <p
                             style={{
-                                fontSize: "18px",
+                                fontSize: "16px",
+                                fontFamily:
+                                    '"Roboto","Helvetica","Arial",sans-serif',
                             }}
                         >
                             {values.strNombre}
                         </p>
                     </Box>
 
-                    <Box>
-                        <p>
-                            <span
-                                style={{
-                                    color: "white",
-                                    fontWeight: "bold",
-                                    backgroundColor:
-                                        values.strMovimiento === "gasto"
-                                            ? "red"
-                                            : "green",
-                                    borderRadius: "22%",
-                                    padding: "5px 15px 5px",
-                                    fontSize: "16px",
-                                }}
-                            >
-                                {
-                                    <NumberFormat
-                                        prefix="$"
-                                        value={values.strCantidad}
-                                        disabled
-                                        thousandSeparator
-                                        customInput={Input}
-                                        style={{
-                                            WebkitTextFillColor:
-                                                "white !important",
-                                            color: "white !important",
-                                            maxWidth: "100px",
-                                        }}
-                                    />
-                                }
-                            </span>
-                        </p>
+                    <Box
+                        sx={{
+                            padding: "15px",
+                        }}
+                    >
+                        <NumberFormat
+                            prefix="$"
+                            value={values.strCantidad}
+                            disabled
+                            thousandSeparator
+                            customInput={Input}
+                            style={{
+                                maxWidth: "100px",
+                            }}
+                        />
                     </Box>
+
+                    <Box
+                        sx={{
+                            backgroundColor:
+                                values.strMovimiento === "gasto" ? "red" : "green",
+                            height: "94px",
+                            width: "8px",
+                            borderRadius: "0px 5px 5px 0px",
+                        }}
+                    ></Box>
                 </Box>
             </Paper>
         </Fragment>
