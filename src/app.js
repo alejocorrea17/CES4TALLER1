@@ -15,6 +15,7 @@ export const App = ({ children }) => {
     });
 
     const [objMovimientos, setObjMovimientos] = useState([]);
+    const [flagChange, setFlagChange] = useState(false);
 
     const handlerChangeMovimiento = ({ value, id }) => {
         const arrAux = objMovimientos;
@@ -57,6 +58,7 @@ export const App = ({ children }) => {
         }
 
         setObjMovimientos(arrAux);
+        setFlagChange(!flagChange);
 
         setObjSaldo((prevState) => ({
             ...prevState,
@@ -74,7 +76,7 @@ export const App = ({ children }) => {
         let saldoFinalTotal = objSaldo.saldoFinalTotal;
 
         arrAux.splice(
-            prevState.findIndex((e) => e.id === id),
+            arrAux.findIndex((e) => e.id === id),
             1
         );
 
@@ -91,6 +93,7 @@ export const App = ({ children }) => {
         }
 
         setObjMovimientos(arrAux);
+        setFlagChange(!flagChange);
 
         setObjSaldo((prevState) => ({
             ...prevState,
@@ -116,6 +119,7 @@ export const App = ({ children }) => {
                 objSaldo,
                 handlerChangeSaldoInicial,
                 objMovimientos,
+                flagChange,
                 handlerChangeMovimiento,
                 deleteMovimiento,
             }}

@@ -20,7 +20,7 @@ import { Context } from "../app";
 import Mov from "./Mov";
 
 const ListMov = () => {
-    const { objMovimientos } = useContext(Context);
+    const { objMovimientos, flagChange } = useContext(Context);
 
     const [search, setSearch] = useState("");
 
@@ -37,18 +37,22 @@ const ListMov = () => {
     };
 
     useEffect(() => {
-        let arrAux = objMovimientos.filter((data) =>
-            data.strNombre.includes(search)
-        );
+        if (typeof flagChange === "boolean") {
+            let arrAux = objMovimientos.filter((data) =>
+                data.strNombre.includes(search)
+            );
 
-        if (strTipo === "todos") {
-            setObjMovimientosFilter(arrAux);
-        } else {
-            arrAux = arrAux.filter((data) => data.strMovimiento === strTipo);
+            if (strTipo === "todos") {
+                setObjMovimientosFilter(arrAux);
+            } else {
+                arrAux = arrAux.filter(
+                    (data) => data.strMovimiento === strTipo
+                );
 
-            setObjMovimientosFilter(arrAux);
+                setObjMovimientosFilter(arrAux);
+            }
         }
-    }, [objMovimientos, strTipo, search]);
+    }, [flagChange, objMovimientos, strTipo, search]);
 
     return (
         <Paper
