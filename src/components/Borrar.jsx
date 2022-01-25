@@ -35,7 +35,7 @@ export const ModalDelete = ({ open, onClose, id }) => {
 
             <DialogActions>
                 <Button onClick={() => onSubmit(id)} color="error">
-                    eliminar
+                    Eliminar
                 </Button>
 
                 <Button onClick={() => onClose()} color="inherit">

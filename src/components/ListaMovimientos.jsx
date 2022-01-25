@@ -17,12 +17,12 @@ import SearchIcon from "@mui/icons-material/Search";
 
 import { Context } from "../app";
 
-import Mov from "./Mov";
+import Mov from "./Movimiento";
 
 const ListMov = () => {
     const { objMovimientos, flagChange } = useContext(Context);
 
-    const [search, setSearch] = useState("");
+    const [strSearch, setSearch] = useState("");
 
     const [strTipo, setStrTipo] = useState("todos");
 
@@ -39,7 +39,7 @@ const ListMov = () => {
     useEffect(() => {
         if (typeof flagChange === "boolean") {
             let arrAux = objMovimientos.filter((data) =>
-                data.strNombre.includes(search)
+                data.strNombre.includes(strSearch)
             );
 
             if (strTipo === "todos") {
@@ -52,7 +52,7 @@ const ListMov = () => {
                 setObjMovimientosFilter(arrAux);
             }
         }
-    }, [flagChange, objMovimientos, strTipo, search]);
+    }, [flagChange, objMovimientos, strTipo, strSearch]);
 
     return (
         <Paper
@@ -100,7 +100,7 @@ const ListMov = () => {
                             startAdornment: <SearchIcon />,
                         }}
                         name="search"
-                        value={search}
+                        value={strSearch}
                         fullWidth
                         onChange={(e) => handlerChangeSearch(e.target.value)}
                     />

@@ -4,7 +4,7 @@ import { toast } from "react-hot-toast";
 
 import { Container } from "@mui/material";
 
-import Header from "./components/Header";
+import Header from "./components/Encabezado";
 
 export const Context = createContext();
 

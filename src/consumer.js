@@ -3,8 +3,8 @@ import React from "react";
 import { Grid } from "@mui/material";
 import { App } from "./app";
 
-import Register from "./components/Register";
-import ListMov from "./components/ListMov";
+import Register from "./components/Registro";
+import ListMov from "./components/ListaMovimientos";
 
 const Consumer = () => {
     return (

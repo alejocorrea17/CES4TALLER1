@@ -109,7 +109,7 @@ const Register = () => {
                                 }
                                 error={errors?.strMovimiento ? true : false}
                                 select
-                                variant="standard"
+                                variant="filled"
                                 fullWidth
                             >
                                 <MenuItem value="ingreso">Ingreso</MenuItem>
@@ -139,7 +139,7 @@ const Register = () => {
                                     "Digita el nombre del movimiento"
                                 }
                                 error={errors?.strNombre ? true : false}
-                                variant="standard"
+                                variant="filled"
                                 fullWidth
                             />
                         )}
@@ -169,7 +169,7 @@ const Register = () => {
                                     "Digita el nombre del movimiento"
                                 }
                                 error={errors?.strCantidad ? true : false}
-                                variant="standard"
+                                variant="filled"
                                 fullWidth
                             />
                         )}
@@ -189,7 +189,7 @@ const Register = () => {
                 </Grid>
 
                 <Grid item xs={12}>
-                    <Box sx={{ display: "flex", flexDirection: "row-reverse" }}>
+                    <Box sx={{ display: "flex", flexDirection: "row" }}>
                         <Button
                             type="submit"
                             color="primary"

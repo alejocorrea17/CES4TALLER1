@@ -7,8 +7,8 @@ import NumberFormat from "react-number-format";
 import DeleteIcon from "@mui/icons-material/Delete";
 
 import EditIcon from "@mui/icons-material/Edit";
-import { ModalEdit } from "./modalEdit";
-import { ModalDelete } from "./modalDelete";
+import { ModalEdit } from "./Editar";
+import { ModalDelete } from "./Borrar";
 
 const Mov = ({ values }) => {
     const [openModalEdit, setOpenModalEdit] = useState(false);
