@@ -198,8 +198,7 @@ const Register = () => {
                         >
                             Agregar movimiento
                         </Button>
-
-                        <Button type="button" color="inherit" size="small">
+                        <Button type="button" color="error" size="small">
                             Cancelar
                         </Button>
                     </Box>

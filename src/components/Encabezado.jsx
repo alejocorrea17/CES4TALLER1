@@ -46,7 +46,7 @@ const Header = ({ values, onChange }) => {
                         style={{
                             color:
                                 values.saldoInicialTotal <= 0 ? "red" : "green",
-                            maxWidth: "100px",
+                            maxWidth: "150px",
                         }}
                         onValueChange={({ value }) => onChange(value)}
                         value={values.saldoInicialTotal || ""}
@@ -69,7 +69,7 @@ const Header = ({ values, onChange }) => {
                                 values.saldoFinalTotal <= 0
                                     ? "red !important"
                                     : "green !important",
-                            maxWidth: "100px",
+                            maxWidth: "150px",
                         }}
                         value={values.saldoFinalTotal}
                     />

@@ -69,7 +69,7 @@ const ListMov = () => {
                             alignItems: "center",
                         }}
                     >
-                        <Box sx={{ flexGrow: 1 }}>
+                        <Box sx={{ flexGrow: 1}}>
                             <Typography variant="subtitle2">
                                 <b>Listado de Movimientos</b>
                             </Typography>
@@ -79,10 +79,10 @@ const ListMov = () => {
                             <p>
                                 <span
                                     style={{
-                                        backgroundColor: "blue",
+                                        backgroundColor: "black",
                                         color: "white",
-                                        padding: "5px",
-                                        borderRadius: "5px",
+                                        padding: "8px",
+                                        borderRadius: "8px",
                                     }}
                                 >
                                     {objFilterMovimientos.length}
